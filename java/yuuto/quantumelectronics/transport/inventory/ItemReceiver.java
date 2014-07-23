@@ -35,6 +35,7 @@ public class ItemReceiver {
 				return stack;
 			}
 		}
+		target.markDirty();
 		TransportStack retStack = stack.copy();
 		retStack.stack.stackSize = stack.stack.stackSize-ret.stackSize;
 		return retStack;

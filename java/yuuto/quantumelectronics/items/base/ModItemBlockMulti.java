@@ -18,15 +18,13 @@ import net.minecraft.util.IIcon;
 public class ModItemBlockMulti extends ItemBlock{
 
 	String[] unlocNames;
-	public ModItemBlockMulti(ModBlockMulti block) {
+	public ModItemBlockMulti(Block block) {
 		super(block);
-		unlocNames = block.getUnlocalisedNames();
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-	}
-	public ModItemBlockMulti(ModBlockContainerMulti block) {
-		super(block);
-		unlocNames = block.getUnlocalisedNames();
+		if(block instanceof ModBlockMulti){
+			unlocNames = ((ModBlockMulti)block).getUnlocalisedNames();
+		}else if(block instanceof ModBlockContainerMulti){
+			unlocNames = ((ModBlockContainerMulti)block).getUnlocalisedNames();
+		}
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 	}

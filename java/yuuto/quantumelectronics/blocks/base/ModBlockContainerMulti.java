@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 
 public abstract class ModBlockContainerMulti extends ModBlockContainer{
 
-	String[] unlocNames;
+	protected String[] unlocNames;
 	IIcon[] blockIcons;
 	
 	public ModBlockContainerMulti(Material mat, CreativeTabs tab,

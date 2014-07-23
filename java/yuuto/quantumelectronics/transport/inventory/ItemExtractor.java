@@ -11,6 +11,7 @@ public class ItemExtractor {
 	public static void extractItems(IInventory target, 
 			ITransportHandler handler, 
 			ForgeDirection facing){
+		System.out.println("pullingItems");
 		if(handler.isFull(facing))
 			return;
 		
@@ -28,6 +29,7 @@ public class ItemExtractor {
 			if(handler.receiveStack(facing, stack, true) == null)
 				continue;
 			target.decrStackSize(i, handler.receiveStack(facing, stack, false).stack.stackSize);
+			target.markDirty();
 			break;
 		}
 	}

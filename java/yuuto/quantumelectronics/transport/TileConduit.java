@@ -10,14 +10,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileConduit extends TileTransport implements ITransportHandler{
 
 	TransportStorage storage;
-	ITransportHandler[] connections = new ITransportHandler[6];
 	Random random = new Random();
 	
-	@Override
-	public boolean canConnect(ForgeDirection from) {
-		return true;
+	public TileConduit(){
+		super();
+		storage = new TransportStorage(100);
 	}
-
+	
 	@Override
 	public TransportStack receiveStack(ForgeDirection from,
 			TransportStack stack, boolean simulate) {
@@ -43,11 +42,12 @@ public class TileConduit extends TileTransport implements ITransportHandler{
 			return;
 		
 		int i = random.nextInt(6);
-		if(connections[i] == null)
+		if(connections[i] == null || 
+				!(connections[i] instanceof ITransportHandler))
 			return;
 		TransportStack toExtract = storage.getStacks()[0];
 		ForgeDirection dir = ForgeDirection.getOrientation(i).getOpposite();
-		storage.extractStack(connections[i].receiveStack(dir, toExtract, false), false);
+		storage.extractStack(((ITransportHandler)connections[i]).receiveStack(dir, toExtract, false), false);
 	}
 
 }

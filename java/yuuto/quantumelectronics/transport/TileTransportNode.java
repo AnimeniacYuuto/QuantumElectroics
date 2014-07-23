@@ -1,6 +1,7 @@
 package yuuto.quantumelectronics.transport;
 
 import yuuto.quantumelectronics.transport.handler.ITransportConnection;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -11,6 +12,7 @@ public class TileTransportNode extends TileTransport{
 	public TileTransportNode(){
 		super();
 		this.connections = new ITransportConnection[1];
+		facing = ForgeDirection.getOrientation(2);
 	}
 	
 	public ForgeDirection getOrientation(){
@@ -33,7 +35,7 @@ public class TileTransportNode extends TileTransport{
 	@Override
 	public void onNeighborChange(IBlockAccess world, int x, int y, int z, 
 			int tileX, int tileY, int tileZ){
-		ITransportConnection tile = (ITransportConnection) world.getTileEntity(tileX, tileY, tileZ);
+		TileEntity tile = world.getTileEntity(tileX, tileY, tileZ);
 		int offX = (x-tileX)*-1, offY = (y-tileY)*-1, offZ = (z-tileZ)*-1;
 		
 		if(facing.getOpposite().offsetX != offX || 
@@ -42,12 +44,12 @@ public class TileTransportNode extends TileTransport{
 			return;
 		}
 		
-		if(tile == null){
+		if(tile == null || !(tile instanceof ITransportConnection)){
 			connections[0] = null;
 			return;
 		}
-		if(tile.canConnect(facing)){
-			connections[0] = tile;
+		if(((ITransportConnection)tile).canConnect(facing)){
+			connections[0] = (ITransportConnection)tile;
 		}
 	}
 }
