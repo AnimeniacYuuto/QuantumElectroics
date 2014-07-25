@@ -1,25 +1,29 @@
 package yuuto.quantumelectronics;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
+import yuuto.quantumelectronics.blocks.ModBlockOre;
+import yuuto.quantumelectronics.blocks.base.ModBlock;
 import yuuto.quantumelectronics.blocks.base.ModBlockContainer;
 import yuuto.quantumelectronics.items.base.ModItemBlockMulti;
-import yuuto.quantumelectronics.transport.BlockConduit;
-import yuuto.quantumelectronics.transport.BlockNode;
-import yuuto.quantumelectronics.transport.TileConduit;
-import yuuto.quantumelectronics.transport.TileItemExtractor;
-import yuuto.quantumelectronics.transport.TileItemReceiver;
+import yuuto.quantumelectronics.ref.ModTabs;
+import yuuto.quantumelectronics.transport.BlockPylon;
+import yuuto.quantumelectronics.transport.TilePylon;
 
 public class ModBlocks {
-	public static final ModBlockContainer CONDUIT = new BlockConduit("Conduit");
-	public static final ModBlockContainer NODE = new BlockNode(
-			"ItemExtractorNode", "ItemReceiverNode");
 	
+	public static final ModBlockContainer PYLON = new BlockPylon("Pylon");
+	public static final ModBlock ORE = new ModBlockOre();
 	
 	public static void init(){
-		GameRegistry.registerBlock(CONDUIT, ModItemBlockMulti.class, "Conduit");
-		GameRegistry.registerTileEntity(TileConduit.class, "containerConduit");
-		GameRegistry.registerBlock(NODE, ModItemBlockMulti.class, "Node");
-		GameRegistry.registerTileEntity(TileItemExtractor.class, "container:Node:ItemExtractor");
-		GameRegistry.registerTileEntity(TileItemReceiver.class, "container:Node:ItemReceiver");
+		GameRegistry.registerBlock(PYLON, "Pylon");
+		GameRegistry.registerTileEntity(TilePylon.class, "conatiner.Pylon");
+		
+		GameRegistry.registerBlock(ORE, ModItemBlockMulti.class, "QEBlockOre");
+		OreDictionary.registerOre("oreParidot", new ItemStack(ORE, 1, 0));
+		OreDictionary.registerOre("oreRuby", new ItemStack(ORE, 1, 1));
+		OreDictionary.registerOre("oreSaphire", new ItemStack(ORE, 1, 2));
 	}
 }

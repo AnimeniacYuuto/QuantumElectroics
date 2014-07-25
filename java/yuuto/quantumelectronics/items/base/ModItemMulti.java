@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModItemMulti extends ModItem{
 	
-	String[] unlocNames;
+	protected String[] unlocNames;
 	IIcon[] itemIcons;
 	
 	public ModItemMulti(CreativeTabs tab, String ... unlocNames){

@@ -2,6 +2,7 @@ package yuuto.quantumelectronics.proxy;
 
 import net.minecraft.creativetab.CreativeTabs;
 import yuuto.quantumelectronics.ModBlocks;
+import yuuto.quantumelectronics.ModItems;
 import yuuto.quantumelectronics.handlers.ConfigHandler;
 import yuuto.quantumelectronics.items.base.ModItem;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,6 +17,7 @@ public abstract class ProxyCommon {
 		ConfigHandler.Init(event.getSuggestedConfigurationFile());
 		FMLCommonHandler.instance().bus().register(new ConfigHandler());
 		ModBlocks.init();
+		ModItems.init();
 	}
 	
 	public void init(FMLInitializationEvent event){

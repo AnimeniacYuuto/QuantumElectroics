@@ -16,7 +16,7 @@ public class ModBlockMulti extends ModBlock{
 
 	String[] unlocNames;
 	IIcon[] blockIcons;
-	protected ModBlockMulti(Material mat, CreativeTabs tab, String... unlocNames) {
+	public ModBlockMulti(Material mat, CreativeTabs tab, String... unlocNames) {
 		super(mat, tab, unlocNames[0]);
 		this.unlocNames = unlocNames;
 	}
