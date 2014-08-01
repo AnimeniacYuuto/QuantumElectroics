@@ -73,16 +73,16 @@ public class RendererItemGem implements IItemRenderer{
 		switch(meta){
 		default:
 		case 0:
-			GL11.glColor4f(0, 1, 0, 0.8f);
+			GL11.glColor4f(0, 1, 0, 0.7f);
 			break;
 		case 1:
-			GL11.glColor4f(1, 0, 0, 0.85f);
+			GL11.glColor4f(1, 0, 0, 0.75f);
 			break;
 		case 2:
-			GL11.glColor4f(0, 0, 1, 0.75f);
+			GL11.glColor4f(0, 0, 1, 0.65f);
 			break;
 		case 3:
-			GL11.glColor4f(1, 1, 0, 0.9f);
+			GL11.glColor4f(1, 1, 0, 0.8f);
 			break;
 		}
 		

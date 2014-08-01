@@ -6,15 +6,25 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import yuuto.quantumelectronics.items.ItemGem;
 import yuuto.quantumelectronics.items.base.ModItem;
+import yuuto.quantumelectronics.items.base.ModItemMulti;
+import yuuto.quantumelectronics.ref.ModTabs;
 
 public class ModItems {
 
 	public static final ModItem GEM = new ItemGem();
+	public static final ModItem DUST = new ModItemMulti(ModTabs.TAB_MAIN, "dustIron", "dustGold");
+	public static final ModItem MISC1 = new ModItemMulti(ModTabs.TAB_MAIN, "shardPylon");
 	public static void init(){
 		GameRegistry.registerItem(GEM, "QEGem");
-		OreDictionary.registerOre("gemPeridot", new ItemStack(GEM, 1, 0));
+		OreDictionary.registerOre("gemParidot", new ItemStack(GEM, 1, 0));
 		OreDictionary.registerOre("gemRuby", new ItemStack(GEM, 1, 1));
-		OreDictionary.registerOre("gemSaphire", new ItemStack(GEM, 1, 2));
+		OreDictionary.registerOre("gemSapphire", new ItemStack(GEM, 1, 2));
+		
+		GameRegistry.registerItem(DUST, "QEDust");
+		OreDictionary.registerOre("dustIron", new ItemStack(DUST, 1, 0));
+		OreDictionary.registerOre("dustGold", new ItemStack(DUST, 1, 1));
+		
+		GameRegistry.registerItem(MISC1, "misc1");
 	}
 	
 

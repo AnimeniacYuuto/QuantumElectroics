@@ -5,6 +5,7 @@ import yuuto.quantumelectronics.ModBlocks;
 import yuuto.quantumelectronics.ModItems;
 import yuuto.quantumelectronics.handlers.ConfigHandler;
 import yuuto.quantumelectronics.items.base.ModItem;
+import yuuto.quantumelectronics.recipe.RecipeFactory;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -18,6 +19,7 @@ public abstract class ProxyCommon {
 		FMLCommonHandler.instance().bus().register(new ConfigHandler());
 		ModBlocks.init();
 		ModItems.init();
+		RecipeFactory.init();
 	}
 	
 	public void init(FMLInitializationEvent event){
@@ -25,7 +27,7 @@ public abstract class ProxyCommon {
 	}
 	
 	public void postInit(FMLPostInitializationEvent event){
-		
+		RecipeFactory.postInit();
 	}
 
 }
