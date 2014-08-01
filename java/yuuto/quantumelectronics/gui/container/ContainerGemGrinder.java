@@ -14,25 +14,26 @@ public class ContainerGemGrinder extends Container{
 		this.tile = tile;
 		playerInv = player.inventory;
 		bindTile();
-		bindPlayerInventory(100, 8);
+		bindPlayerInventory(8, 84);
 	}
 	public void bindTile(){
+		addSlotToContainer(new Slot(tile, 0, 56, 35));
+		addSlotToContainer(new Slot(tile, 1, 116, 35));
 	}
 	public void bindPlayerInventory(int x, int y){
 		for(int i = 0; i < 3; i++){
 			for(int j = 0; j < 9; j++){
-				addSlotToContainer(new Slot(tile, i*9+j+9, x+18*j, y+18*i));
+				addSlotToContainer(new Slot(playerInv, i*9+j+9, x+18*j, y+18*i));
 			}
 		}
 		for(int j = 0; j < 9; j++){
-			addSlotToContainer(new Slot(tile, j, x+18*j, y+18*4));
+			addSlotToContainer(new Slot(playerInv, j, x+18*j, y+18*3+4));
 		}	
 	}
 	
 	@Override
-	public boolean canInteractWith(EntityPlayer p_75145_1_) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canInteractWith(EntityPlayer player) {
+		return true;
 	}
 
 }

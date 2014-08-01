@@ -7,6 +7,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -41,6 +43,47 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
 			break;
 		}
 	}
+	@Override
+    public void readFromNBT(NBTTagCompound nbt){
+    	super.readFromNBT(nbt);
+    	System.out.println("Reading NBT");
+    	unlocName = nbt.getString("GemGrinderName");
+    	isActive = nbt.getBoolean("IsActive");
+    	orientation = ForgeDirection.getOrientation(nbt.getInteger("Orientation"));
+    	
+    	grindTime = nbt.getInteger("GrindTime");
+    	NBTTagList invList = nbt.getTagList("Inventory", 10);
+		for(int i = 0; i < invList.tagCount(); i++){
+			NBTTagCompound tag = invList.getCompoundTagAt(i);
+			int slot = tag.getByte("Slot");
+			inv[slot] = ItemStack.loadItemStackFromNBT(tag);
+		}
+    	
+    	this.markDirty();
+    }
+    @Override
+    public void writeToNBT(NBTTagCompound nbt){
+    	super.writeToNBT(nbt);
+    	System.out.println("Writing NBT");
+    	nbt.setString("GemGrinderName", unlocName);
+    	nbt.setBoolean("IsActive", isActive);
+    	nbt.setInteger("Orientation", orientation.ordinal());
+    	
+    	nbt.setInteger("GrindTime", grindTime);
+    	
+    	NBTTagList invList = new NBTTagList();
+    	for(int i = 0; i < inv.length; i++){
+    		if(inv[i] == null)
+    			continue;
+    		NBTTagCompound tag = new NBTTagCompound();
+    		tag.setByte("Slot", (byte)i);
+    		inv[i].writeToNBT(tag);
+    		invList.appendTag(tag);
+    	}
+    	nbt.setTag("Inventory", invList);
+    }
+	
+	
 	
 	@Override
 	public void updateEntity(){
@@ -50,6 +93,7 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
 	}
 	public void grind(){
 		if(canGrind()){
+			System.out.println("Activated "+grindTime);
 			grindTime++;
 			if(grindTime == maxGrindTime){
 				grindItem();
@@ -68,7 +112,7 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
         else
         {
             ItemStack itemstack = GrinderRecipes.instance.getResult(inv[0]);
-            if (itemstack == null) return false;
+            if (itemstack == null){System.out.println("Activated null"); return false;}
             if (inv[1] == null) return true;
             if (!inv[1].isItemEqual(itemstack)) return false;
             int result = inv[1].stackSize + itemstack.stackSize;

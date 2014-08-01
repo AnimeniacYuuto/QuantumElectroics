@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import yuuto.quantumelectronics.QuantumElectronics;
 import yuuto.quantumelectronics.blocks.base.ModBlockMachineMulti;
 import yuuto.quantumelectronics.tile.TileGemFurnace;
 import yuuto.quantumelectronics.tile.TileGemGrinder;
@@ -47,6 +48,9 @@ public class ModBlockMachines1 extends ModBlockMachineMulti{
 			return true;
 		}
 		if(tile instanceof TileGemGrinder){
+			if(world.isRemote)
+				return true;
+			player.openGui(QuantumElectronics.instance, 0, world, x, y, z);
 			return true;
 		}
 		if(tile instanceof TileGemGrinderCrank){

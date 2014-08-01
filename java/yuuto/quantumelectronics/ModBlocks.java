@@ -13,6 +13,7 @@ import yuuto.quantumelectronics.items.base.ModItemBlockMulti;
 import yuuto.quantumelectronics.ref.ModTabs;
 import yuuto.quantumelectronics.tile.TileGemFurnace;
 import yuuto.quantumelectronics.tile.TileGemGrinder;
+import yuuto.quantumelectronics.tile.TileGemGrinderCrank;
 import yuuto.quantumelectronics.transport.BlockPylon;
 import yuuto.quantumelectronics.transport.TilePylon;
 
@@ -41,6 +42,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(MACHINES1, ModItemBlockMulti.class, "ProdctionMachines");
 		GameRegistry.registerTileEntity(TileGemFurnace.class, "ContainerGemFurnace");
 		GameRegistry.registerTileEntity(TileGemGrinder.class, "ContainerGemGrinder");
+		GameRegistry.registerTileEntity(TileGemGrinderCrank.class, "ContainerGemCrank");
 		OreDictionary.registerOre("gemFurnace", new ItemStack(MACHINES1, 1, 0));
 		OreDictionary.registerOre("gemFurnace", new ItemStack(MACHINES1, 1, 1));
 		OreDictionary.registerOre("gemFurnace", new ItemStack(MACHINES1, 1, 2));

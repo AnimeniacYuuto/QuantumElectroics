@@ -13,6 +13,7 @@ public class TileGemGrinderCrank extends TileEntity{
 			timer --;
 	}
 	public void onActivated(){
+
 		if(timer > 0)
 			return;
 		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord-1, zCoord);

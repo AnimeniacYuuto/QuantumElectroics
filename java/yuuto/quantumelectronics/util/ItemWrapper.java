@@ -11,18 +11,21 @@ public class ItemWrapper{
 	public ItemStack getStack(){
 		return stack;
 	}
+	public static boolean compareStacks(ItemStack stack1, ItemStack stack2){
+		if(stack1.getItem() != stack2.getItem())
+			return false;
+		if(stack1.getItemDamage() != stack2.getItemDamage())
+			return false;
+		return ItemStack.areItemStackTagsEqual(stack1, stack2);
+	} 
 	
 	@Override
 	public boolean equals(Object o){
 		if(o instanceof ItemWrapper){
-			if(stack.isItemEqual(((ItemWrapper)o).getStack()))
-				return true;
-			return false;
+			return compareStacks(stack, ((ItemWrapper)o).getStack());
 		}
 		if(o instanceof ItemStack){
-			if(stack.isItemEqual((ItemStack)o))
-				return true;
-			return false;
+			return compareStacks(stack, ((ItemStack)o));
 		}
 		return false;
 	}
