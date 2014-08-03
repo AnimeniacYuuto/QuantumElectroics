@@ -48,6 +48,10 @@ public class RecipeFactory {
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.BLOCK_GEM, 1, 2),
 			"ggg", "ggg", "ggg", 'g', new ItemStack(ModItems.GEM, 1, 2)
 		);
+		
+		//Adds dust to ingot recipes
+		GameRegistry.addSmelting(new ItemStack(ModItems.DUST,1,0),  new ItemStack(Items.iron_ingot), 0.7f);
+		GameRegistry.addSmelting(new ItemStack(ModItems.DUST,1,1),  new ItemStack(Items.gold_ingot), 1f);
 	}
 	
 	public static void postInit(){

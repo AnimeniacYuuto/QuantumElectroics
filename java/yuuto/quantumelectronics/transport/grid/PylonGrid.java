@@ -3,30 +3,32 @@ package yuuto.quantumelectronics.transport.grid;
 import java.util.ArrayList;
 import java.util.List;
 
-import yuuto.quantumelectronics.transport.TilePylon;
-import yuuto.quantumelectronics.transport.TilePylonNode;
+import yuuto.quantumelectronics.transport.IGridTile;
 
 public class PylonGrid {
-	List<GridNode> connectedNodes = new ArrayList<GridNode>();
-	TilePylon origin;
+	ArrayList<IGridTile> connections = new ArrayList<IGridTile>();
 	
-	public PylonGrid(TilePylon origin){
-		this.origin = origin;
+	
+	public PylonGrid(){}
+	public PylonGrid(IGridTile tile){
+		connections.add(tile);
 	}
-	public void updateGrid(){
-		connectedNodes.clear();
-		List<TilePylon> checked = new ArrayList<TilePylon>();
-		checkForNode(origin, checked, 0);
+	public PylonGrid(List<IGridTile> tileList){
+		connections.addAll(tileList);
+		for(int i = 0; i < connections.size(); i++){
+			connections.get(i).setGrid(this);
+		}
 	}
-	private void checkForNode(TilePylon pylon, List<TilePylon> checked, int depth){
-		checked.add(pylon);
-		if(depth > 0){
-			if(pylon instanceof TilePylonNode)
-				connectedNodes.add(new GridNode((TilePylonNode)pylon, depth));
+	
+	public void mergeWith(PylonGrid grid){
+		connections.addAll(grid.getConnections());
+		for(IGridTile tile : grid.getConnections()){
+			tile.setGrid(this);
 		}
-		List<TilePylon> checkNext = pylon.getConnections();
-		for(int i = 0; i < checkNext.size(); i++){
-			checkForNode(pylon, checked, depth+1);
-		}
+	}
+	public void split(IGridTile tile){
+	}
+	public List<IGridTile> getConnections(){
+		return (List<IGridTile>)connections.clone();
 	}
 }

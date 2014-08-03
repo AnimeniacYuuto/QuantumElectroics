@@ -3,7 +3,7 @@ package yuuto.quantumelectronics.transport.pathfinder;
 import java.util.ArrayList;
 import java.util.List;
 
-import yuuto.quantumelectronics.transport.TilePylon;
+import yuuto.quantumelectronics.tile.TilePylon;
 import yuuto.quantumelectronics.util.Logger;
 
 import net.minecraft.block.Block;

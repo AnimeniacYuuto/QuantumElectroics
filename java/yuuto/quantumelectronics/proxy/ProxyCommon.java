@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import yuuto.quantumelectronics.ModBlocks;
 import yuuto.quantumelectronics.ModItems;
 import yuuto.quantumelectronics.QuantumElectronics;
-import yuuto.quantumelectronics.gui.GuiHandler;
+import yuuto.quantumelectronics.gui.base.GuiHandler;
 import yuuto.quantumelectronics.handlers.ConfigHandler;
 import yuuto.quantumelectronics.items.base.ModItem;
 import yuuto.quantumelectronics.recipe.RecipeFactory;
