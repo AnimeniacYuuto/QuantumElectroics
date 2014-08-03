@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import yuuto.quantumelectronics.QuantumElectronics;
 import yuuto.quantumelectronics.blocks.base.ModBlockContainer;
@@ -32,4 +33,12 @@ public class ModBlockPylon extends ModBlockContainer{
 		}
 		return false;
 	}
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l){
+	   return false;
+	}
+	@Override
+    public boolean isOpaqueCube(){
+        return false;
+    }
 }

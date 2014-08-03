@@ -8,6 +8,8 @@ public class ModTextures {
 	
 	public static final ResourceLocation MODEL_GEM = 
 			new ResourceLocation(ID, "models/Gem.obj");
+	public static final ResourceLocation MODEL_PYLON = 
+			new ResourceLocation(ID, "models/Pylon.obj");
 	
 	public static final ResourceLocation TEXT_GEM = 
 			new ResourceLocation(ID, "textures/uvs/Gem.png");

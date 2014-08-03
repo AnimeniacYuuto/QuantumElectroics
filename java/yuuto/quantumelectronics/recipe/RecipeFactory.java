@@ -21,6 +21,7 @@ public class RecipeFactory {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.MACHINES1, 1, 2),
 			" s ", "s s", "sfs", 's', "gemSapphire", 'f', new ItemStack(Blocks.furnace)
 		));
+		
 		//Adds Gem Grinder Recipes
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.MACHINES1, 1, 3),
 			"gwg", "g g", "ggg", 'g', "gemParidot", 'w', new ItemStack(Blocks.planks)
