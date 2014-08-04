@@ -4,13 +4,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+import yuuto.quantumelectronics.tile.base.IMachine;
 import yuuto.quantumelectronics.transport.TileGridNode;
 import yuuto.quantumelectronics.transport.TileGridTile;
 
-public class TileGridGenerator extends TileGridNode implements IInventory{
+public class TileGridGenerator extends TileGridNode implements IInventory, IMachine{
 
+	ForgeDirection orientation = ForgeDirection.getOrientation(2);
 	ItemStack[] inv = new ItemStack[1];
 	int burnTime;
 	static int energyPerTick = 80;
@@ -20,9 +27,15 @@ public class TileGridGenerator extends TileGridNode implements IInventory{
 		if(burnTime > 0){
 			burnTime--;
 			this.storage.receiveEnergy(energyPerTick, false);
+			if(burnTime == 0){
+				this.markDirty();
+			}
 		}else if(canBurn()){
 			burnTime = TileEntityFurnace.getItemBurnTime(inv[0]);
 			inv[0].stackSize--;
+			if(inv[0].stackSize < 1)
+				inv[0] = null;
+			this.markDirty();
 		}
 		propogateEnergy();
 	}
@@ -124,5 +137,75 @@ public class TileGridGenerator extends TileGridNode implements IInventory{
 			return false;
 		return GameRegistry.getFuelValue(stack) > 0;
 	}
+	
+	@Override
+	public ForgeDirection getOrientation(){
+		return orientation;
+	}
+	@Override
+	public ForgeDirection setOrientation(ForgeDirection dir){
+		orientation = dir;
+		return orientation;
+	}
+	@Override
+	public ForgeDirection rotateAround(ForgeDirection axis){
+		orientation = orientation.getRotation(axis);
+		return orientation;
+	}
+
+	@Override
+	public boolean isActive() {
+		return burnTime > 0;
+	}
+	
+	@Override
+    public Packet getDescriptionPacket(){
+    	NBTTagCompound nbt = new NBTTagCompound();
+    	this.writeToNBT(nbt);
+    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+    }
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+    	NBTTagCompound nbt = pkt.func_148857_g();
+    	if(nbt == null || nbt.hasNoTags())
+    		return;
+    	this.readFromNBT(nbt);
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound nbt){
+    	super.readFromNBT(nbt);
+    	System.out.println("Reading NBT");
+    	orientation = ForgeDirection.getOrientation(nbt.getInteger("Orientation"));
+    	
+    	burnTime = nbt.getInteger("BurnTime");
+    	NBTTagList invList = nbt.getTagList("Inventory", 10);
+		for(int i = 0; i < invList.tagCount(); i++){
+			NBTTagCompound tag = invList.getCompoundTagAt(i);
+			int slot = tag.getByte("Slot");
+			inv[slot] = ItemStack.loadItemStackFromNBT(tag);
+		}
+    	
+    	this.markDirty();
+    }
+    @Override
+    public void writeToNBT(NBTTagCompound nbt){
+    	super.writeToNBT(nbt);
+    	System.out.println("Writing NBT");
+    	nbt.setInteger("Orientation", orientation.ordinal());
+    	
+    	nbt.setInteger("BurnTime", burnTime);
+    	
+    	NBTTagList invList = new NBTTagList();
+    	for(int i = 0; i < inv.length; i++){
+    		if(inv[i] == null)
+    			continue;
+    		NBTTagCompound tag = new NBTTagCompound();
+    		tag.setByte("Slot", (byte)i);
+    		inv[i].writeToNBT(tag);
+    		invList.appendTag(tag);
+    	}
+    	nbt.setTag("Inventory", invList);
+    }
 
 }

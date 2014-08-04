@@ -33,7 +33,7 @@ public class RendererItemPylon implements IItemRenderer{
 			break;
 		case INVENTORY:
 			//TODO
-			renderItem(0.5f,0,0, item.getItemDamage(), 0.7f, 0.7f, 0.7f);
+			renderItem(0f,0f,0, item.getItemDamage(), 14f, 14f, 14f);
 		default:
 			break;
 		}

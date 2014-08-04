@@ -4,12 +4,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import yuuto.quantumelectronics.recipe.GrinderRecipes;
+import yuuto.quantumelectronics.tile.base.IMachine;
 import yuuto.quantumelectronics.transport.TileGridNode;
 import yuuto.quantumelectronics.transport.TileGridTile;
 
-public class TileGridGrinder extends TileGridNode implements ISidedInventory{
+public class TileGridGrinder extends TileGridNode implements ISidedInventory, IMachine{
 
+	ForgeDirection orientation = ForgeDirection.getOrientation(2);
 	ItemStack[] inv = new ItemStack[2];
 	ItemStack grinding;
 	int grindEnergy = 0;
@@ -49,6 +57,9 @@ public class TileGridGrinder extends TileGridNode implements ISidedInventory{
 	protected void startGrind(){
 		if(canGrind()){
 			grinding = inv[0].splitStack(1);
+			if(inv[0].stackSize < 1)
+				inv[0] = null;
+			this.markDirty();
 		}
 	}
 	protected void finishGrind(){
@@ -64,6 +75,7 @@ public class TileGridGrinder extends TileGridNode implements ISidedInventory{
 
         grinding = null;
         grindEnergy-=maxGrindEnergy;
+        this.markDirty();
 	}
 
 	@Override
@@ -159,5 +171,83 @@ public class TileGridGrinder extends TileGridNode implements ISidedInventory{
 			return false;
 		return true;
 	}
+	
+	@Override
+	public ForgeDirection getOrientation(){
+		return orientation;
+	}
+	@Override
+	public ForgeDirection setOrientation(ForgeDirection dir){
+		orientation = dir;
+		return orientation;
+	}
+	@Override
+	public ForgeDirection rotateAround(ForgeDirection axis){
+		orientation = orientation.getRotation(axis);
+		return orientation;
+	}
+
+	@Override
+	public boolean isActive() {
+		return grinding != null;
+	}
+	
+	@Override
+    public Packet getDescriptionPacket(){
+    	NBTTagCompound nbt = new NBTTagCompound();
+    	this.writeToNBT(nbt);
+    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+    }
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+    	NBTTagCompound nbt = pkt.func_148857_g();
+    	if(nbt == null || nbt.hasNoTags())
+    		return;
+    	this.readFromNBT(nbt);
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound nbt){
+    	super.readFromNBT(nbt);
+    	System.out.println("Reading NBT");
+    	orientation = ForgeDirection.getOrientation(nbt.getInteger("Orientation"));
+    	
+    	grindEnergy = nbt.getInteger("GrindTime");
+    	if(nbt.hasKey("Grinding")){
+    		grinding = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Grinding"));
+    	}else{
+    		grinding = null;
+    	}
+    	NBTTagList invList = nbt.getTagList("Inventory", 10);
+		for(int i = 0; i < invList.tagCount(); i++){
+			NBTTagCompound tag = invList.getCompoundTagAt(i);
+			int slot = tag.getByte("Slot");
+			inv[slot] = ItemStack.loadItemStackFromNBT(tag);
+		}
+    	
+    	this.markDirty();
+    }
+    @Override
+    public void writeToNBT(NBTTagCompound nbt){
+    	super.writeToNBT(nbt);
+    	System.out.println("Writing NBT");
+    	nbt.setInteger("Orientation", orientation.ordinal());
+    	
+    	nbt.setInteger("GrindTime", grindEnergy);
+    	if(grinding != null){
+    		nbt.setTag("Grinding", grinding.writeToNBT(new NBTTagCompound()));
+    	}
+    	
+    	NBTTagList invList = new NBTTagList();
+    	for(int i = 0; i < inv.length; i++){
+    		if(inv[i] == null)
+    			continue;
+    		NBTTagCompound tag = new NBTTagCompound();
+    		tag.setByte("Slot", (byte)i);
+    		inv[i].writeToNBT(tag);
+    		invList.appendTag(tag);
+    	}
+    	nbt.setTag("Inventory", invList);
+    }
 
 }

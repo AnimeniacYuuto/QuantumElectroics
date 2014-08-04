@@ -17,6 +17,7 @@ public abstract class TileGridTile extends TileEnergyHandler implements IGridTil
 	protected PylonGrid grid = new PylonGrid(this);
 	protected boolean initialized = false;
 	protected int range = 5;
+	protected boolean needsUpdate = true;
 	
 	public void initialize(){
 		initialized = true;
@@ -25,7 +26,11 @@ public abstract class TileGridTile extends TileEnergyHandler implements IGridTil
 	}
 	public void uninitialize(){
 		initialized = false;
-		grid.split(this);
+		if(connections.size() < 2){
+			grid.removeConnection(this);
+		}else{
+			grid.split(this);
+		}
 	}
 	public abstract void doWork();
 
@@ -58,6 +63,10 @@ public abstract class TileGridTile extends TileEnergyHandler implements IGridTil
 			return;
 		if(!initialized){
 			initialize();
+		}
+		if(needsUpdate){
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			needsUpdate = false;
 		}
 		doWork();
 	}
@@ -127,6 +136,12 @@ public abstract class TileGridTile extends TileEnergyHandler implements IGridTil
 	public void setGrid(PylonGrid grid) {
 		this.grid = grid;		
 	}
+	
+	@Override
+    public void markDirty(){
+    	super.markDirty();
+    	needsUpdate = true;
+    }
 
 	
 }

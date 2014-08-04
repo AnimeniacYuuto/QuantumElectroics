@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ModBlockMachineMulti extends ModBlockContainerMulti{
 
-	IIcon[][] blockIcons;
+	protected IIcon[][] blockIcons;
 	public ModBlockMachineMulti(String... unlocNames) {
 		super(Material.rock, ModTabs.TAB_MAIN, unlocNames);
 	}

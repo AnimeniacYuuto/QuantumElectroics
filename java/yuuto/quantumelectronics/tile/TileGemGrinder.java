@@ -16,7 +16,6 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
 
 	String unlocName = "GemGrinder.";
 	protected ForgeDirection orientation = ForgeDirection.getOrientation(2);
-	protected boolean isActive;
 	int grindTime = 0;
 	static int maxGrindTime = 8;
 	boolean needsUpdate = true;
@@ -48,7 +47,6 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
     	super.readFromNBT(nbt);
     	System.out.println("Reading NBT");
     	unlocName = nbt.getString("GemGrinderName");
-    	isActive = nbt.getBoolean("IsActive");
     	orientation = ForgeDirection.getOrientation(nbt.getInteger("Orientation"));
     	
     	grindTime = nbt.getInteger("GrindTime");
@@ -66,7 +64,6 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
     	super.writeToNBT(nbt);
     	System.out.println("Writing NBT");
     	nbt.setString("GemGrinderName", unlocName);
-    	nbt.setBoolean("IsActive", isActive);
     	nbt.setInteger("Orientation", orientation.ordinal());
     	
     	nbt.setInteger("GrindTime", grindTime);
@@ -252,6 +249,6 @@ public class TileGemGrinder extends TileEntity implements ISidedInventory, IMach
 	}
 	@Override
 	public boolean isActive(){
-		return isActive;
+		return false;
 	}
 }

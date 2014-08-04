@@ -28,7 +28,7 @@ public class RendererModelPylon {
 		//GL11.glEnable(GL11.GL_LIGHT2);
 		GL11.glEnable(GL11.GL_BLEND);
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        //GL11.glColor4b(red, green, blue, alpha);
+        GL11.glColor4f(0.75f, 0.75f, 1.0f, 0.8f);
 		model.renderAll();
 		GL11.glDisable(GL11.GL_BLEND);
 		//GL11.glDisable(GL11.GL_LIGHT2);

@@ -1,5 +1,7 @@
 package yuuto.quantumelectronics.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,15 +9,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import yuuto.quantumelectronics.QuantumElectronics;
 import yuuto.quantumelectronics.blocks.base.ModBlockContainerMulti;
+import yuuto.quantumelectronics.blocks.base.ModBlockMachineMulti;
 import yuuto.quantumelectronics.ref.ModTabs;
+import yuuto.quantumelectronics.ref.References;
 import yuuto.quantumelectronics.tile.TileGridFurnace;
 import yuuto.quantumelectronics.tile.TileGridGenerator;
 import yuuto.quantumelectronics.tile.TileGridGrinder;
 
-public class ModBlockGridMachines1 extends ModBlockContainerMulti{
+public class ModBlockGridMachines1 extends ModBlockMachineMulti{
 
+	
+	
 	public ModBlockGridMachines1() {
-		super(Material.rock, ModTabs.TAB_MAIN, "gidFurnace", "gridGenerator", "gridGrinder");
+		super("gridFurnace", "gridGenerator", "gridGrinder");
 	}
 
 	@Override
@@ -57,5 +63,14 @@ public class ModBlockGridMachines1 extends ModBlockContainerMulti{
 		}
 		return false;
 	}
+	@SideOnly(Side.CLIENT)
+	protected String getTextureName(int meta, int side){
+		if(side == 1)
+			return getTextureName(meta)+"FrontInactive";
+		if(side == 2)
+			return getTextureName(meta)+"FrontActive";
+		return String.format("%s%s", References.TEXTURE_PREFIX, "gridMachine");
+	}
+
 
 }

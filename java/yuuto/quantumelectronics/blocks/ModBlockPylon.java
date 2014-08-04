@@ -15,6 +15,7 @@ public class ModBlockPylon extends ModBlockContainer{
 
 	public ModBlockPylon() {
 		super(Material.rock, ModTabs.TAB_MAIN, "Pylon");
+		setLightLevel(1f);
 	}
 
 	@Override
@@ -30,6 +31,7 @@ public class ModBlockPylon extends ModBlockContainer{
 			if(world.isRemote)
 				return true;
 			player.openGui(QuantumElectronics.instance, 4, world, x, y, z);
+			return true;
 		}
 		return false;
 	}
