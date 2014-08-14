@@ -1,5 +1,6 @@
 package yuuto.quantumelectronics.transport.tile;
 
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,10 +35,10 @@ public class TileRequester extends TileGridNode implements IInventoryParrent{
 			return;
 		if(customInventory.getStackInSlot(2) != null)
 			return;
-		if(customInventory.getStackInSlot(1).getItem() == ModItems.FLUID_DUMMY){
+		if(customInventory.getStackInSlot(1).getItem() instanceof IFluidContainerItem){
+			System.out.println("Filling IFluidContainerItem");
 			FluidStack fluidType = ModItems.FLUID_DUMMY.getFluid(customInventory.getStackInSlot(0));
-			ItemStack cStack = customInventory.getStackInSlot(1).copy();
-			cStack.stackSize = 1;
+			ItemStack cStack = customInventory.getStackInSlot(1);
 			IFluidContainerItem container = (IFluidContainerItem)cStack.getItem();
 			FluidStack fStack = container.getFluid(cStack);
 			fluidType.amount = 1000;
@@ -47,14 +48,17 @@ public class TileRequester extends TileGridNode implements IInventoryParrent{
 			if(fStack == null){
 				FluidStack drain = requester.drainFluid(fluidType.copy());
 				if(drain != null){
-					System.out.println("Filling Containers");
 					container.fill(cStack, fluidType, true);
 				}
 			}else if(fStack.isFluidEqual(fluidType)){
-				fluidType.amount -= fStack.amount;
-				fluidType = requester.drainFluid(fluidType.copy());
+				System.out.println("Draining Fluid");
+				int max = container.getCapacity(cStack) - fStack.amount;
+				if(max < fluidType.amount)
+					fluidType.amount = max;
+				FluidStack drain = requester.drainFluid(fluidType.copy());
 				if(fluidType != null){
-					container.fill(cStack, fluidType, true);
+					System.out.println("Filling Fluid");
+					container.fill(cStack, drain, true);
 				}
 			}
 			if(container.getFluid(cStack) != null && container.getFluid(cStack).amount >=
@@ -64,17 +68,37 @@ public class TileRequester extends TileGridNode implements IInventoryParrent{
 			}
 			return;
 		}
+		if(customInventory.getStackInSlot(1).getItem() == Items.bucket){
+			System.out.println("Filling Bucket Container");
+			ItemStack cStack = customInventory.getStackInSlot(1).copy();
+			FluidStack fluidType = ModItems.FLUID_DUMMY.getFluid(customInventory.getStackInSlot(0));
+			fluidType.amount = FluidContainerRegistry.BUCKET_VOLUME;
+			FluidStack drain = requester.drainFluid(fluidType.copy());
+			ItemStack result = null;
+			if(drain != null){
+				System.out.println("Getting result");
+				result = FluidContainerRegistry.fillFluidContainer(drain, cStack);
+			}
+			if(result != null){
+				System.out.println("Found Result");
+				customInventory.setInventorySlotContents(2, result);
+				customInventory.decrStackSize(1, 1);
+			}
+			return;
+		}
 		if(FluidContainerRegistry.isEmptyContainer(customInventory.getStackInSlot(1))){
+			System.out.println("Filling Bucket Container");
 			ItemStack cStack = customInventory.getStackInSlot(1).copy();
 			FluidStack fluidType = ModItems.FLUID_DUMMY.getFluid(customInventory.getStackInSlot(0));
 			fluidType.amount = FluidContainerRegistry.getContainerCapacity(cStack);
 			FluidStack drain = requester.drainFluid(fluidType.copy());
 			ItemStack result = null;
 			if(drain != null){
+				System.out.println("Getting result");
 				result = FluidContainerRegistry.fillFluidContainer(drain, cStack);
 			}
 			if(result != null){
-				System.out.println("Filling Containers");
+				System.out.println("Found Result");
 				customInventory.setInventorySlotContents(2, result);
 				customInventory.decrStackSize(1, 1);
 			}
