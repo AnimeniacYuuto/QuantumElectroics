@@ -27,3 +27,5 @@ README.txt
 LICENSE-fml.txt
 gradlew
 gradlew.bat
+logs/fml-junk-earlystartup.log
+logs/latest.log
