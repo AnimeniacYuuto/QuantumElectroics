@@ -68,6 +68,8 @@ public class RendererItemRouter implements IItemRenderer{
 		case 8:
 		case 9:
 			return new ColorRGBAb(0,0,255, 191);
+		case 10:
+			return new ColorRGBAb(191, 191, 255, 204);
 		default:
 			return new ColorRGBAb(255, 255, 255, 191);
 		}
@@ -89,6 +91,8 @@ public class RendererItemRouter implements IItemRenderer{
 			return new ColorRGBAb(255, 128, 0, 255);
 		case 6:
 			return new ColorRGBAb(255, 0, 0, 255);
+		case 10:
+			return new ColorRGBAb(191, 191, 255, 255);
 		default:
 			return new ColorRGBAb(255, 255, 255, 255);
 		}

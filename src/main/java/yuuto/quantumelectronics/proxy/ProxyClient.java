@@ -15,6 +15,7 @@ import yuuto.quantumelectronics.transport.tile.TileFluidRouter;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergyAcceptor;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergySync;
 import yuuto.quantumelectronics.transport.tile.TileItemRouter;
+import yuuto.quantumelectronics.transport.tile.TileNodeChassi;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -35,6 +36,7 @@ public class ProxyClient extends ProxyCommon{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileGridEnergyAcceptor.class, rendererRouter);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileGridEnergySync.class, rendererRouter);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileItemRouter.class, rendererRouter);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileNodeChassi.class, rendererRouter);
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.GRID_NODES), new RendererItemRouter());
 	}
 }

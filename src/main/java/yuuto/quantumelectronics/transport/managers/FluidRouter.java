@@ -15,6 +15,7 @@ public abstract class FluidRouter implements IFluidRouter{
 	protected FluidFilter filter;
 	protected IFluidHandler target;
 	protected ForgeDirection orientation;
+	protected ForgeDirection sneaky;
 	protected TileGridTile parrent;
 	protected int channel;
 	
@@ -36,6 +37,15 @@ public abstract class FluidRouter implements IFluidRouter{
 	@Override
 	public void setFilter(FluidFilter f){
 		filter = f;
+	}
+	@Override 
+	public void setSneaky(ForgeDirection dir){
+		sneaky = dir;
+	}
+	public ForgeDirection getSide(){
+		if(sneaky == null || sneaky == ForgeDirection.UNKNOWN)
+			return orientation;
+		return sneaky;
 	}
 
 }

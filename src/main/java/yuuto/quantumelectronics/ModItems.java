@@ -9,6 +9,7 @@ import yuuto.quantumelectronics.items.ItemGem;
 import yuuto.quantumelectronics.items.base.ModItem;
 import yuuto.quantumelectronics.items.base.ModItemMulti;
 import yuuto.quantumelectronics.ref.ModTabs;
+import yuuto.quantumelectronics.transport.module.ItemModule;
 
 public class ModItems {
 
@@ -16,6 +17,7 @@ public class ModItems {
 	public static final ModItem DUST = new ModItemMulti(ModTabs.TAB_MAIN, "dustIron", "dustGold");
 	public static final ModItem MISC1 = new ModItemMulti(ModTabs.TAB_MAIN, "shardPylon");
 	public static final ItemFluidDummy FLUID_DUMMY = new ItemFluidDummy();
+	public static final ItemModule MODULES = new ItemModule();
 	public static void init(){
 		//Registers my gems
 		GameRegistry.registerItem(GEM, "QEGem");
@@ -32,6 +34,8 @@ public class ModItems {
 		GameRegistry.registerItem(MISC1, "misc1");
 		
 		GameRegistry.registerItem(FLUID_DUMMY, "QE_FluidDummy");
+		
+		GameRegistry.registerItem(MODULES, "QE_Modules");
 	}
 	
 

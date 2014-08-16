@@ -17,6 +17,7 @@ import yuuto.quantumelectronics.transport.tile.TileFluidRouter;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergyAcceptor;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergySync;
 import yuuto.quantumelectronics.transport.tile.TileItemRouter;
+import yuuto.quantumelectronics.transport.tile.TileNodeChassi;
 import yuuto.quantumelectronics.transport.tile.TileRequester;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,7 +28,7 @@ public class ModBlockGridNodes extends ModBlockMachineMulti{
 		super("gridEnergyAcceptor", "gridEnergySync", "ItemExtractor", 
 				"ItemReceiver", "ItemProvider", "ItemSupplierActive", 
 				"ItemSupplierPassive", "FluidExtractor", "FluidReceiver", 
-				"FluidProvider");
+				"FluidProvider", "ChassiNode");
 	}
 
 	@Override
@@ -53,6 +54,8 @@ public class ModBlockGridNodes extends ModBlockMachineMulti{
 			return new TileFluidRouter(1);
 		case 9:
 			return new TileFluidRouter(2);
+		case 10:
+			return new TileNodeChassi();
 		default:
 			return null;
 		}
@@ -75,6 +78,12 @@ public class ModBlockGridNodes extends ModBlockMachineMulti{
 			player.openGui(QuantumElectronics.instance, 7, world, x, y, z);
 			return true;
 			
+		}
+		if(tile instanceof TileNodeChassi){
+			if(world.isRemote)
+				return true;
+			//TODO player.openGui(QuantumElectronics.instance, 8, world, x, y, z);
+			return true;
 		}
 		return false;
 	}

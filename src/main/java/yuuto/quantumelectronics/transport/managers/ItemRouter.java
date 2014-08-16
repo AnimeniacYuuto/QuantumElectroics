@@ -13,6 +13,7 @@ public abstract class ItemRouter implements IItemRouter{
 	protected ItemFilter filter;
 	protected IInventory target;
 	protected ForgeDirection orientation;
+	protected ForgeDirection sneaky;
 	protected TileGridTile parrent;
 	protected int channel;
 	
@@ -53,6 +54,15 @@ public abstract class ItemRouter implements IItemRouter{
 		if(stack1.getItemDamage() != stack2.getItemDamage())
 			return false;
 		return ItemStack.areItemStackTagsEqual(stack1, stack2);
+	}
+	@Override 
+	public void setSneaky(ForgeDirection dir){
+		sneaky = dir;
+	}
+	public ForgeDirection getSide(){
+		if(sneaky == null || sneaky == ForgeDirection.UNKNOWN)
+			return orientation;
+		return sneaky;
 	}
 
 }

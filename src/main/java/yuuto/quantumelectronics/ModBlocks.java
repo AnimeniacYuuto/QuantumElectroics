@@ -62,5 +62,6 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileGridEnergySync.class, "Container.GridEnergySync");
 		GameRegistry.registerTileEntity(TileItemRouter.class, "Container.ItemRouter");
 		GameRegistry.registerTileEntity(TileFluidRouter.class, "Container.FluidRouter");
+		GameRegistry.registerTileEntity(TileNodeChassi.class, "Container.NodeChassi");
 	}
 }

@@ -5,15 +5,33 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
+import yuuto.quantumelectronics.ModItems;
+import yuuto.quantumelectronics.transport.filter.FluidFilter;
+import yuuto.quantumelectronics.transport.filter.ItemFilter;
 import yuuto.quantumelectronics.transport.tile.IInventoryParrent;
 
 public class ModuleFilter implements IInventory{
 	ItemStack[] inv;
 	ItemStack base;
+	IInventoryParrent parrent;
+	
+	boolean white;
+	boolean useNBT;
+	boolean useMeta;
+	boolean useOre;
+	ForgeDirection sneakyDirection;
 	
 	public ModuleFilter(int size, ItemStack base){
-		inv = new ItemStack[size];
+		this(size, base, null);
+	}
+	public ModuleFilter(int size, ItemStack base, IInventoryParrent parrent){
+		this.inv = new ItemStack[size];
 		this.base = base;
+		this.parrent = parrent;
+		
+		if(base.hasTagCompound())
+			this.readFromNBT(base.getTagCompound());
 	}
 	
 	@Override
@@ -86,7 +104,10 @@ public class ModuleFilter implements IInventory{
 	@Override
 	public void openInventory() {markDirty();}
 	@Override
-	public void closeInventory() {markDirty();}
+	public void closeInventory() {
+		ModItems.MODULES.saveInventory(base, this);
+		markDirty();
+	}
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return true;
@@ -94,6 +115,8 @@ public class ModuleFilter implements IInventory{
 
 	@Override
 	public void markDirty() {
+		if(parrent != null)
+			parrent.onInventoryUpdate(this);
 	}
 	public ItemStack[] getItemsFiltered(){
 		return inv.clone();
@@ -113,6 +136,11 @@ public class ModuleFilter implements IInventory{
 			int slot = tag.getByte("Slot");
 			inv[slot] = ItemStack.loadItemStackFromNBT(tag);
 		}
+		white = nbt.getBoolean("WhiteList");
+		useOre = nbt.getBoolean("UseOre");
+		useMeta = nbt.getBoolean("UseMeta");
+		useNBT = nbt.getBoolean("UseNBT");
+		sneakyDirection = ForgeDirection.getOrientation((int)nbt.getByte("Direction"));
 	}
 	public void writeToNBT(NBTTagCompound nbt){
 		NBTTagList invList = new NBTTagList();
@@ -125,5 +153,23 @@ public class ModuleFilter implements IInventory{
     		invList.appendTag(tag);
     	}
     	nbt.setTag("Inventory", invList);
+    	
+    	nbt.setBoolean("WhiteList", white);
+    	nbt.setBoolean("UseOre", useOre);
+    	nbt.setBoolean("UseMeta", useMeta);
+    	nbt.setBoolean("UseNBT", useNBT);
+    	nbt.setByte("Direction", (byte)sneakyDirection.ordinal());
+	}
+	
+	public ItemFilter getItemFilter(){
+		if(isEmpty())
+			return null;		
+		return new ItemFilter(inv, white, useOre, useMeta, useNBT);
+	}
+	public FluidFilter getFluidFilter(){
+		return new FluidFilter();
+	}
+	public ForgeDirection sneaky(){
+		return sneakyDirection;
 	}
 }

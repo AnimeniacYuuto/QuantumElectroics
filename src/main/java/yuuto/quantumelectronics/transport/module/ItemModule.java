@@ -5,7 +5,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import yuuto.quantumelectronics.items.base.ModItem;
 import yuuto.quantumelectronics.items.base.ModItemMulti;
+import yuuto.quantumelectronics.ref.ModTabs;
 import yuuto.quantumelectronics.transport.TileGridTile;
+import yuuto.quantumelectronics.transport.managers.EnergyAcceptor;
+import yuuto.quantumelectronics.transport.managers.EnergySync;
 import yuuto.quantumelectronics.transport.managers.FluidExtractor;
 import yuuto.quantumelectronics.transport.managers.FluidProvider;
 import yuuto.quantumelectronics.transport.managers.FluidReceiver;
@@ -14,21 +17,26 @@ import yuuto.quantumelectronics.transport.managers.ItemProvider;
 import yuuto.quantumelectronics.transport.managers.ItemReceiver;
 import yuuto.quantumelectronics.transport.managers.ItemSupplierActive;
 import yuuto.quantumelectronics.transport.managers.ItemSupplierPassive;
+import yuuto.quantumelectronics.transport.routing.IFluidRouter;
+import yuuto.quantumelectronics.transport.routing.IItemRouter;
 import yuuto.quantumelectronics.transport.routing.IRouter;
+import yuuto.quantumelectronics.transport.tile.IInventoryParrent;
+import yuuto.quantumelectronics.transport.tile.TileNodeChassi;
 
 public class ItemModule extends ModItemMulti{
 
-	/*"gridEnergyAcceptor", "gridEnergySync", "ItemExtractor", 
-	"ItemReceiver", "ItemProvider", "ItemSupplierActive", 
-	"ItemSupplierPassive", "FluidExtractor", "FluidReceiver", 
-	"FluidProvider"*/
-	
-	public ItemModule(CreativeTabs tab, String unlocName) {
-		super(tab, unlocName);
+	public ItemModule() {
+		super(ModTabs.TAB_MAIN, "moduleEnergyAcceptor", "moduleEnergySync",
+				"moduleItemExtractor", "moduleItemReceiver", "moduleItemPRovider",
+				"moduleItemSupplierActive", "moduleItemSupplierPassive", 
+				"moduleFluidExtractor", "moduleFluidReceiver", "moduleFluidProvider");
 	}
 
 	public ModuleFilter openInventory(ItemStack stack){
 		return new ModuleFilter(9, stack);
+	}
+	public ModuleFilter openInventory(ItemStack stack, IInventoryParrent parrent){
+		return new ModuleFilter(9, stack, parrent);
 	}
 	public void saveInventory(ItemStack stack, ModuleFilter filter){
 		NBTTagCompound nbt = stack.getTagCompound();
@@ -38,12 +46,12 @@ public class ItemModule extends ModItemMulti{
 		}
 		filter.writeToNBT(nbt);
 	}
-	public IRouter getRouter(ItemStack stack, TileGridTile tile){
+	public IRouter getRouter(ItemStack stack, TileNodeChassi tile){
 		switch(stack.getItemDamage()){
 		case 0:
-			return null;
+			return new EnergyAcceptor(tile, tile.getEnergyStorage());
 		case 1:
-			return null;
+			return new EnergySync(tile, tile.getEnergyStorage());
 		case 2:
 			return new ItemExtractor(tile);
 		case 3:
@@ -65,25 +73,15 @@ public class ItemModule extends ModItemMulti{
 		}
 	}
 	public void updateRouter(ItemStack stack, IRouter router){
-		
-	}
-	
-	public boolean canIgnoreMeta(ItemStack stack){
-		return true;
-	}
-	public boolean canIgnoreNBT(ItemStack stack){
-		return true;
-	}
-	public boolean canBlackList(ItemStack stack){
-		return true;
-	}
-	public boolean canUseOreDict(ItemStack stack){
-		return true;
-	}
-	public boolean canBeGeneric(ItemStack stack){
-		return true;
-	}
-	public boolean canSneaky(ItemStack stack){
-		return false;
+		ModuleFilter filter = openInventory(stack);
+		if(filter == null)
+			return;
+		if(router instanceof IItemRouter){
+			((IItemRouter)router).setFilter(filter.getItemFilter());
+		}
+		if(router instanceof IFluidRouter){
+			((IFluidRouter)router).setFilter(filter.getFluidFilter());
+		}
+		router.setSneaky(filter.sneaky());
 	}
 }

@@ -9,6 +9,7 @@ import yuuto.quantumelectronics.transport.tile.TileFluidRouter;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergyAcceptor;
 import yuuto.quantumelectronics.transport.tile.TileGridEnergySync;
 import yuuto.quantumelectronics.transport.tile.TileItemRouter;
+import yuuto.quantumelectronics.transport.tile.TileNodeChassi;
 import yuuto.quantumelectronics.util.ColorRGBAb;
 
 
@@ -40,6 +41,8 @@ public class RendererTileRouter extends TileEntitySpecialRenderer{
 			return new ColorRGBAb(255,255,0, 191);
 		if(tile instanceof TileItemRouter)
 			return new ColorRGBAb(0, 255,0, 191);
+		if(tile instanceof TileNodeChassi)
+			return new ColorRGBAb(191, 191, 255, 204);
 		return new ColorRGBAb(255, 255, 255, 191);
 	}
 	private ColorRGBAb getBaseColor(TileEntity tile){
@@ -60,6 +63,8 @@ public class RendererTileRouter extends TileEntitySpecialRenderer{
 			return new ColorRGBAb(255, 128, 0, 255);
 		case 6:
 			return new ColorRGBAb(255, 0, 0, 255);
+		case 10:
+			return new ColorRGBAb(191, 191, 255, 255);
 		default:
 			return new ColorRGBAb(255, 255, 255, 255);
 		}
