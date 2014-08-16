@@ -68,6 +68,11 @@ public class TileFluidRouter extends TileGridNode implements IMachine, ITranspor
 		super.initialize();
 		this.onNeighborChange(worldObj, xCoord, yCoord, zCoord, xCoord, yCoord, xCoord);
 	}
+	@Override
+	public void uninitialize(){
+		super.uninitialize();
+		this.router.onPreGridChange();
+	}
 	
 	@Override
 	public void doWork() {

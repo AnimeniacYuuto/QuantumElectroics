@@ -65,6 +65,11 @@ public class TileItemRouter extends TileGridNode implements IMachine, ITransport
 		super.initialize();
 		this.onNeighborChange(worldObj, xCoord, yCoord, zCoord, xCoord, yCoord, xCoord);
 	}
+	@Override
+	public void uninitialize(){
+		super.uninitialize();
+		this.router.onPreGridChange();
+	}
 	
 	@Override
 	public void doWork() {

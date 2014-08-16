@@ -52,4 +52,8 @@ public class ModBlockPylon extends ModBlockContainerMulti{
     public boolean isOpaqueCube(){
         return false;
     }
+	@Override
+	public int getLightOpacity(){
+		return 0;
+	}
 }

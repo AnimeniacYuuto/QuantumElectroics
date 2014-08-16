@@ -78,7 +78,7 @@ public abstract class ModBlockMachineMulti extends ModBlockContainerMulti{
 	 * @param entity
 	 * @return
 	 */
-	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	public int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
     {
         int l = MathHelper.floor_double((double)(entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));

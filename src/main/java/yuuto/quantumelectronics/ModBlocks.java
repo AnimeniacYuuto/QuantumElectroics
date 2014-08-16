@@ -19,6 +19,7 @@ public class ModBlocks {
 			Material.rock, ModTabs.TAB_MAIN, "blockParidot", "blockRuby", "blockSapphire");
 	public static final ModBlockContainer MACHINES1 = new ModBlockMachines1();
 	public static final ModBlockContainer GRID_MACHINES1 = new ModBlockGridMachines1();
+	public static final ModBlockContainer GRID_NODES = new ModBlockGridNodes();
 	
 	public static void init(){
 		//registers the pylon block
@@ -54,10 +55,12 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileGridFurnace.class, "Container.GridFurnace");
 		GameRegistry.registerTileEntity(TileGridGenerator.class, "Container.GridGenerator");
 		GameRegistry.registerTileEntity(TileGridGrinder.class, "Container.GridGrinder");
+		GameRegistry.registerTileEntity(TileRequester.class, "Container.ItemRequester");
+		
+		GameRegistry.registerBlock(GRID_NODES, ModItemBlockMulti.class, "GridNodes");
 		GameRegistry.registerTileEntity(TileGridEnergyAcceptor.class, "Container.GridEnergyAcceptor");
 		GameRegistry.registerTileEntity(TileGridEnergySync.class, "Container.GridEnergySync");
 		GameRegistry.registerTileEntity(TileItemRouter.class, "Container.ItemRouter");
-		GameRegistry.registerTileEntity(TileRequester.class, "Container.ItemRequester");
 		GameRegistry.registerTileEntity(TileFluidRouter.class, "Container.FluidRouter");
 	}
 }

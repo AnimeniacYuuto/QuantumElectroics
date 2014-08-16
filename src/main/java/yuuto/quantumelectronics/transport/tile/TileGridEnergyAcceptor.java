@@ -45,11 +45,13 @@ public class TileGridEnergyAcceptor extends TileGridNode implements IMachine{
 	@Override
 	public ForgeDirection setOrientation(ForgeDirection dir) {
 		orientation = dir.getOpposite();
+		this.notifyTargetBlock();
 		return orientation;
 	}
 	@Override
 	public ForgeDirection rotateAround(ForgeDirection axis) {
 		orientation = orientation.getRotation(axis);
+		this.notifyTargetBlock();
 		return orientation;
 	}
 	@Override
@@ -81,6 +83,16 @@ public class TileGridEnergyAcceptor extends TileGridNode implements IMachine{
     	if(nbt == null || nbt.hasNoTags())
     		return;
     	this.readFromNBT(nbt);
+    }
+    
+    public void notifyTargetBlock(){
+    	this.worldObj.getBlock(xCoord+orientation.offsetX, 
+    			yCoord+orientation.offsetY, 
+    			zCoord+orientation.offsetZ).onNeighborChange(worldObj, 
+    					xCoord+orientation.offsetX, 
+    	    			yCoord+orientation.offsetY, 
+    	    			zCoord+orientation.offsetZ,
+    	    			this.xCoord, this.yCoord, this.zCoord);
     }
 
 }

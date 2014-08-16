@@ -1,22 +1,19 @@
-package yuuto.quantumelectronics.transport.tile;
-
-import java.util.ArrayList;
-import java.util.List;
+package yuuto.quantumelectronics.transport.module;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import yuuto.quantumelectronics.transport.tile.IInventoryParrent;
 
-public class InventoryFilter implements IInventory{
-
+public class ModuleFilter implements IInventory{
 	ItemStack[] inv;
-	IInventoryParrent parrent;
+	ItemStack base;
 	
-	public InventoryFilter(int size, IInventoryParrent parrent){
+	public ModuleFilter(int size, ItemStack base){
 		inv = new ItemStack[size];
-		this.parrent = parrent;
+		this.base = base;
 	}
 	
 	@Override
@@ -97,7 +94,6 @@ public class InventoryFilter implements IInventory{
 
 	@Override
 	public void markDirty() {
-		parrent.onInventoryUpdate(this);		
 	}
 	public ItemStack[] getItemsFiltered(){
 		return inv.clone();
