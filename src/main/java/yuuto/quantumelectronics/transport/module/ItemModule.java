@@ -1,8 +1,11 @@
 package yuuto.quantumelectronics.transport.module;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import yuuto.quantumelectronics.QuantumElectronics;
 import yuuto.quantumelectronics.items.base.ModItem;
 import yuuto.quantumelectronics.items.base.ModItemMulti;
 import yuuto.quantumelectronics.ref.ModTabs;
@@ -31,6 +34,14 @@ public class ItemModule extends ModItemMulti{
 				"moduleItemSupplierActive", "moduleItemSupplierPassive", 
 				"moduleFluidExtractor", "moduleFluidReceiver", "moduleFluidProvider");
 	}
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+		System.out.println("OnItemUse");
+		if(world.isRemote)
+			return stack;
+		player.openGui(QuantumElectronics.instance, 101, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+		return stack;
+	}
 
 	public ModuleFilter openInventory(ItemStack stack){
 		return new ModuleFilter(9, stack);
@@ -39,12 +50,9 @@ public class ItemModule extends ModItemMulti{
 		return new ModuleFilter(9, stack, parrent);
 	}
 	public void saveInventory(ItemStack stack, ModuleFilter filter){
-		NBTTagCompound nbt = stack.getTagCompound();
-		if(nbt == null){
-			nbt = new NBTTagCompound();
-			stack.setTagCompound(nbt);
-		}
+		NBTTagCompound nbt = new NBTTagCompound();
 		filter.writeToNBT(nbt);
+		stack.stackTagCompound = nbt;
 	}
 	public IRouter getRouter(ItemStack stack, TileNodeChassi tile){
 		switch(stack.getItemDamage()){

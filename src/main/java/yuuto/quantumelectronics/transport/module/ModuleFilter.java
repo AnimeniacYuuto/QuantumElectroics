@@ -16,11 +16,11 @@ public class ModuleFilter implements IInventory{
 	ItemStack base;
 	IInventoryParrent parrent;
 	
-	boolean white;
-	boolean useNBT;
-	boolean useMeta;
-	boolean useOre;
-	ForgeDirection sneakyDirection;
+	boolean white = true;
+	boolean useNBT = true;;
+	boolean useMeta = true;
+	boolean useOre = false;
+	ForgeDirection sneakyDirection = ForgeDirection.UNKNOWN;
 	
 	public ModuleFilter(int size, ItemStack base){
 		this(size, base, null);
@@ -29,8 +29,10 @@ public class ModuleFilter implements IInventory{
 		this.inv = new ItemStack[size];
 		this.base = base;
 		this.parrent = parrent;
-		
-		if(base.hasTagCompound())
+		if(base.getTagCompound() == null){
+			System.out.println("No Tag");
+		}
+		if(base.getTagCompound() != null)
 			this.readFromNBT(base.getTagCompound());
 	}
 	
@@ -105,6 +107,7 @@ public class ModuleFilter implements IInventory{
 	public void openInventory() {markDirty();}
 	@Override
 	public void closeInventory() {
+		System.out.println("SaveFilter");
 		ModItems.MODULES.saveInventory(base, this);
 		markDirty();
 	}
@@ -130,6 +133,7 @@ public class ModuleFilter implements IInventory{
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt){
+		System.out.println("Reading NBT");
 	    NBTTagList invList = nbt.getTagList("Inventory", 10);
 		for(int i = 0; i < invList.tagCount(); i++){
 			NBTTagCompound tag = invList.getCompoundTagAt(i);
@@ -143,6 +147,7 @@ public class ModuleFilter implements IInventory{
 		sneakyDirection = ForgeDirection.getOrientation((int)nbt.getByte("Direction"));
 	}
 	public void writeToNBT(NBTTagCompound nbt){
+		System.out.println("Writing NBT");
 		NBTTagList invList = new NBTTagList();
     	for(int i = 0; i < inv.length; i++){
     		if(inv[i] == null)

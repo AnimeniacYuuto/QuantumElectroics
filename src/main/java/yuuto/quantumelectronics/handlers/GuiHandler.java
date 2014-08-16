@@ -1,5 +1,6 @@
 package yuuto.quantumelectronics.handlers;
 
+import yuuto.quantumelectronics.ModItems;
 import yuuto.quantumelectronics.gui.*;
 import yuuto.quantumelectronics.gui.container.*;
 import yuuto.quantumelectronics.tile.*;
@@ -7,6 +8,7 @@ import yuuto.quantumelectronics.transport.tile.TileFluidRouter;
 import yuuto.quantumelectronics.transport.tile.TileRequester;
 import yuuto.quantumelectronics.transport.tile.TileItemRouter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -16,6 +18,7 @@ public class GuiHandler implements IGuiHandler{
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
+		ItemStack item = player.inventory.getCurrentItem();
 		TileEntity tile = world.getTileEntity(x, y, z);
 		switch(ID){
 		case 0:
@@ -50,6 +53,10 @@ public class GuiHandler implements IGuiHandler{
 			if(tile instanceof TileFluidRouter)
 				return new ContainerFluidRouter((TileFluidRouter)tile, player);
 			break;
+		case 101:
+			if(item.getItem() == ModItems.MODULES)
+				return new ContainerModule(item, player);
+			break;
 		default:
 			return null;
 		}
@@ -59,6 +66,7 @@ public class GuiHandler implements IGuiHandler{
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
+		ItemStack item = player.inventory.getCurrentItem();
 		TileEntity tile = world.getTileEntity(x, y, z);
 		switch(ID){
 		case 0:
@@ -92,6 +100,10 @@ public class GuiHandler implements IGuiHandler{
 		case 7:
 			if(tile instanceof TileFluidRouter)
 				return new GuiFluidRouter((TileFluidRouter)tile, player);
+			break;
+		case 101:
+			if(item.getItem() == ModItems.MODULES)
+				return new GuiModule(item, player);
 			break;
 		default:
 			return null;
